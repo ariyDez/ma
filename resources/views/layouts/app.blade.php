@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{mix('css/app.css')}}"></head>
+    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:400,700' rel='stylesheet' type='text/css'>
 <body>
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
