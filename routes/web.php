@@ -18,5 +18,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/profile', function() {
-    return view('profile');
+    return view('home');
 })->middleware('auth');
