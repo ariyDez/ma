@@ -17,9 +17,9 @@
                     <a href="#" class="prev"></a><a href="#" class="next"></a>
                 </div>
                 <ul class="menu">
-                    <li class="current"><a href="index.html" class="clr-1">Home</a></li>
-                    <li><a href="/#" class="clr-2">About</a></li>
-                    <li><a href="/profile" class="clr-3">Профиль</a></li>
+                    <li class="current"><a href="#" class="clr-1">Home</a></li>
+                    <li><a href="/profile" class="clr-2">Profile</a></li>
+                    {{--<li><a href="/profile" class="clr-3">Профиль</a></li>--}}
                     {{--<li><a href="#" class="clr-4">Gallery</a></li>--}}
                     {{--<li><a href="#" class="clr-5">Contacts</a></li>--}}
                 </ul>
