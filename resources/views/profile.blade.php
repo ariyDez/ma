@@ -18,10 +18,10 @@
                 </div>
                 <ul class="menu">
                     <li class="current"><a href="index.html" class="clr-1">Home</a></li>
-                    <li><a href="about.html" class="clr-2">About</a></li>
-                    <li><a href="schedule.html" class="clr-3">Schedule</a></li>
-                    <li><a href="gallery.html" class="clr-4">Gallery</a></li>
-                    <li><a href="contacts.html" class="clr-5">Contacts</a></li>
+                    <li><a href="/#" class="clr-2">About</a></li>
+                    <li><a href="/profile" class="clr-3">Профиль</a></li>
+                    {{--<li><a href="#" class="clr-4">Gallery</a></li>--}}
+                    {{--<li><a href="#" class="clr-5">Contacts</a></li>--}}
                 </ul>
             </nav>
         </header>
@@ -31,7 +31,7 @@
                 <div class="grid_8">
                     <div class="pad-1">
                         <h2 class="p2">Welcome to Art School</h2>
-                        <p class="text-1">Art School is one of <a href="http://blog.templatemonster.com/free-website-templates/" target="_blank" class="link">free website templates</a> by TemplateMonster.com team. This template is optimized for 1280X1024 screen resolution. It is also XHTML & CSS valid.</p>
+                        <p>Бла-бла-бла (ваш текст короче)</p>
                     </div>
                     <div class="block-1">
                         <div class="block-1-shadow">
