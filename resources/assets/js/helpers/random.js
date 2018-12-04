@@ -17,7 +17,7 @@ export default {
                 number = this.makeNegative(min, max, numbers);
                 break;
             case 2:
-                number = this.makeSpecialCeilMixed(min, max, numbers);
+                number = this.makeMixed(min, max, numbers);
                 break;
         }
         return number;
@@ -122,6 +122,17 @@ export default {
             console.log('negative numbers', numbers);
             console.log('number', number);
             number =  this.make(min, max);
+        }
+        return -number;
+    },
+    makeMixed(min, max, numbers) {
+        let number = 0;
+        while(!numbers.includes(`${number}`)) {
+            number =  this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max))
+        }
+        const luck = Random.make(0, 1);
+        if (luck) {
+            return number;
         }
         return -number;
     }
