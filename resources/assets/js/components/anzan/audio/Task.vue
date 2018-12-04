@@ -28,6 +28,7 @@
         created() {
             Store.initAudio();
             this.init();
+            console.log('store', Store.state);
             this.setNumber();
         },
         methods: {
@@ -52,16 +53,25 @@
                 }
             },
             sound() {
+                console.log('sound start..');
                 function voiceStartCallback() {}
                 const parameters = {
                     onstart: voiceStartCallback,
                     onend: this.voiceEndCallback
                 };
                 if (this.isFirst) {
-                    this.number = Random.makeSpecialCeil(this.min, this.max, this.action);
+                    if (this.action === 0) {
+                        this.number = Random.makeSpecial(this.min, this.max, this.action, this.multiply_numbers);
+                    } else if(this.action === 1) {
+                        this.number = Random.makeSpecial(this.min, this.max, this.action, this.diff_numbers);
+                    }
                     this.isFirst = false;
                 } else {
-                    this.number = Random.makeSpecialFloor(this.min, this.max, this.action);
+                    if (this.action === 0) {
+                        this.number = Random.makeSpecial(this.min, this.max, this.action, this.multiply_numbers);
+                    } else if (this.action === 1) {
+                        this.number = Random.makeSpecial(this.min, this.max, this.action, this.diff_numbers);
+                    }
                 }
                 this.result += this.number;
                 responsiveVoice.speak(this.number.toString(), 'Russian Female', parameters);

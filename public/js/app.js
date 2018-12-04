@@ -492,66 +492,132 @@ module.exports = {
         var num = Math.floor(Math.random() * (max - min + 1)) + min;
         return num - num % 10;
     },
-    makeSpecialCeil: function makeSpecialCeil(min, max, type) {
+    makeSpecial: function makeSpecial(min, max, type, numbers) {
         var number = void 0;
         switch (type) {
             case 0:
-                number = this.makeSpecialCeilPositive(min, max);
+                number = this.makePositive(min, max, numbers);
                 break;
             case 1:
-                number = this.makeSpecialCeilNegative(min, max);
+                number = this.makeNegative(min, max, numbers);
                 break;
             case 2:
-                number = this.makeSpecialCeilMixed(min, max);
+                number = this.makeSpecialCeilMixed(min, max, numbers);
                 break;
         }
         return number;
     },
-    makeSpecialFloor: function makeSpecialFloor(min, max, type) {
+    makeSpecialCeil: function makeSpecialCeil(min, max, type, numbers) {
         var number = void 0;
         switch (type) {
             case 0:
-                number = this.makeSpecialFloorPositive(min, max);
+                number = this.makeSpecialCeilPositive(min, max, numbers);
                 break;
             case 1:
-                number = this.makeSpecialFloorNegative(min, max);
+                number = this.makeSpecialCeilNegative(min, max, numbers);
                 break;
             case 2:
-                number = this.makeSpecialFloorMixed(min, max);
+                number = this.makeSpecialCeilMixed(min, max, numbers);
                 break;
         }
         return number;
     },
-    makeSpecialCeilPositive: function makeSpecialCeilPositive(min, max) {
-        return this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
+    makeSpecialFloor: function makeSpecialFloor(min, max, type, numbers) {
+        var number = void 0;
+        switch (type) {
+            case 0:
+                number = this.makeSpecialFloorPositive(min, max, numbers);
+                break;
+            case 1:
+                number = this.makeSpecialFloorNegative(min, max, numbers);
+                break;
+            case 2:
+                number = this.makeSpecialFloorMixed(min, max, numbers);
+                break;
+        }
+        return number;
     },
-    makeSpecialFloorPositive: function makeSpecialFloorPositive(min, max) {
-        return this.make(Math.pow(10, min - 1), (9 + (1 - Math.pow(0.1, max - 1))) * Math.pow(10, max - 1));
+    makeSpecialCeilPositive: function makeSpecialCeilPositive(min, max, numbers) {
+        var number = 0;
+        while (!numbers.includes(number)) {
+            console.log('number', number);
+            console.log('min', min);
+            console.log('max', max);
+            number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
+        }
+        return number;
     },
-    makeSpecialCeilNegative: function makeSpecialCeilNegative(min, max) {
-        var number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
+    makeSpecialFloorPositive: function makeSpecialFloorPositive(min, max, numbers) {
+        var number = 0;
+        while (!numbers.includes(number)) {
+            number = this.make(Math.pow(10, min - 1), (9 + (1 - Math.pow(0.1, max - 1))) * Math.pow(10, max - 1));
+        }
+        return number;
+    },
+    makeSpecialCeilNegative: function makeSpecialCeilNegative(min, max, numbers) {
+        var number = 0;
+        while (!numbers.includes(number)) {
+            number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
+        }
         return -number;
     },
-    makeSpecialFloorNegative: function makeSpecialFloorNegative(min, max) {
-        var number = this.make(Math.pow(10, min - 1), (9 + (1 - Math.pow(0.1, max - 1))) * Math.pow(10, max - 1));
+    makeSpecialFloorNegative: function makeSpecialFloorNegative(min, max, numbers) {
+        var number = 0;
+        while (!numbers.includes(number)) {
+            number = this.make(Math.pow(10, min - 1), (9 + (1 - Math.pow(0.1, max - 1))) * Math.pow(10, max - 1));
+        }
         return -number;
     },
-    makeSpecialFloorMixed: function makeSpecialFloorMixed(min, max) {
-        var number = this.make(Math.pow(10, min - 1), (9 + (1 - Math.pow(0.1, max - 1))) * Math.pow(10, max - 1));
+    makeSpecialFloorMixed: function makeSpecialFloorMixed(min, max, numbers) {
+        var number = 0;
+        while (!numbers.includes(number)) {
+            number = this.make(Math.pow(10, min - 1), (9 + (1 - Math.pow(0.1, max - 1))) * Math.pow(10, max - 1));
+        }
         var luck = Random.make(0, 1);
         if (luck) {
             return number;
         }
         return -number;
     },
-    makeSpecialCeilMixed: function makeSpecialCeilMixed(min, max) {
-        var number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
+    makeSpecialCeilMixed: function makeSpecialCeilMixed(min, max, numbers) {
+        var number = 0;
+        while (!numbers.includes(number)) {
+            number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
+        }
         var luck = Random.make(0, 1);
         if (luck) {
             return number;
+        }
+        return -number;
+    },
+    makePositive: function makePositive(min, max, numbers) {
+        var number = 0;
+
+        while (!numbers.includes('' + number)) {
+            console.log('positive numbers', numbers);
+            console.log('number', number);
+            number = this.make(min, max);
+        }
+        return number;
+    },
+    makeNegative: function makeNegative(min, max, numbers) {
+        console.log('negative numbers', numbers);
+        var number = 0;
+        while (!numbers.includes(number)) {
+            console.log('negative numbers', numbers);
+            console.log('number', number);
+            number = this.make(min, max);
         }
         return -number;
     }
+    // makeWithFilter(min, max, filter) {
+    //     const num = Math.floor(Math.random() * (max - min + 1)) + min;
+    //     if (filter.indexOf(num) === -1) {
+    //         this.makeWithFilter(min, max, filter);
+    //     }
+    //     return num;
+    // }
+
 });
 
 /***/ }),
@@ -57480,6 +57546,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         __WEBPACK_IMPORTED_MODULE_0__store_arithmetic__["a" /* default */].init();
+        console.log('store', __WEBPACK_IMPORTED_MODULE_0__store_arithmetic__["a" /* default */].state);
         this.init();
         if (Object.keys(this.$route.query).length !== 0) {
             this.next();
@@ -57505,9 +57572,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var i = 0; i < this.operation_deal; i++) {
                 var number = void 0;
                 if (i === 0) {
-                    number = __WEBPACK_IMPORTED_MODULE_1__helpers_random__["a" /* default */].makeSpecialCeil(this.min, this.max, 0);
+                    if (this.action === 0) {
+                        number = __WEBPACK_IMPORTED_MODULE_1__helpers_random__["a" /* default */].makeSpecialCeil(this.min, this.max, 0, this.multiply_numbers);
+                    } else if (this.action === 1) {
+                        number = __WEBPACK_IMPORTED_MODULE_1__helpers_random__["a" /* default */].makeSpecialCeil(this.min, this.max, 0, this.diff_numbers);
+                    }
                 } else {
-                    number = __WEBPACK_IMPORTED_MODULE_1__helpers_random__["a" /* default */].makeSpecialFloor(this.min, this.max, this.action);
+                    if (this.action === 0) {
+                        number = __WEBPACK_IMPORTED_MODULE_1__helpers_random__["a" /* default */].makeSpecialFloor(this.min, this.max, this.action, this.multiply_numbers);
+                    } else if (this.action === 1) {
+                        number = __WEBPACK_IMPORTED_MODULE_1__helpers_random__["a" /* default */].makeSpecialFloor(this.min, this.max, this.action, this.diff_numbers);
+                    }
                 }
                 result += number;
                 this.operation_numbers.push(number);
@@ -60736,6 +60811,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         __WEBPACK_IMPORTED_MODULE_1__store_anzan__["a" /* default */].initAudio();
         this.init();
+        console.log('store', __WEBPACK_IMPORTED_MODULE_1__store_anzan__["a" /* default */].state);
         this.setNumber();
     },
 
@@ -60763,16 +60839,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         sound: function sound() {
+            console.log('sound start..');
             function voiceStartCallback() {}
             var parameters = {
                 onstart: voiceStartCallback,
                 onend: this.voiceEndCallback
             };
             if (this.isFirst) {
-                this.number = __WEBPACK_IMPORTED_MODULE_0__helpers_random__["a" /* default */].makeSpecialCeil(this.min, this.max, this.action);
+                if (this.action === 0) {
+                    this.number = __WEBPACK_IMPORTED_MODULE_0__helpers_random__["a" /* default */].makeSpecial(this.min, this.max, this.action, this.multiply_numbers);
+                } else if (this.action === 1) {
+                    this.number = __WEBPACK_IMPORTED_MODULE_0__helpers_random__["a" /* default */].makeSpecial(this.min, this.max, this.action, this.diff_numbers);
+                }
                 this.isFirst = false;
             } else {
-                this.number = __WEBPACK_IMPORTED_MODULE_0__helpers_random__["a" /* default */].makeSpecialFloor(this.min, this.max, this.action);
+                if (this.action === 0) {
+                    this.number = __WEBPACK_IMPORTED_MODULE_0__helpers_random__["a" /* default */].makeSpecial(this.min, this.max, this.action, this.multiply_numbers);
+                } else if (this.action === 1) {
+                    this.number = __WEBPACK_IMPORTED_MODULE_0__helpers_random__["a" /* default */].makeSpecial(this.min, this.max, this.action, this.diff_numbers);
+                }
             }
             this.result += this.number;
             responsiveVoice.speak(this.number.toString(), 'Russian Female', parameters);

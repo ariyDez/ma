@@ -60,6 +60,7 @@
         },
         created() {
             Store.init();
+            console.log('store', Store.state);
             this.init();
             if(Object.keys(this.$route.query).length !== 0) {
                 this.next();
@@ -84,9 +85,18 @@
                 for(let i=0;i<this.operation_deal;i++) {
                     let number;
                     if (i === 0) {
-                        number = Random.makeSpecialCeil(this.min, this.max, 0);
+                        if (this.action === 0) {
+                            number = Random.makeSpecialCeil(this.min, this.max, 0, this.multiply_numbers);
+                        } else if(this.action === 1) {
+                            number = Random.makeSpecialCeil(this.min, this.max, 0, this.diff_numbers);
+                        }
+
                     } else {
-                        number = Random.makeSpecialFloor(this.min, this.max, this.action);
+                        if (this.action === 0) {
+                            number = Random.makeSpecialFloor(this.min, this.max, this.action, this.multiply_numbers);
+                        } else if(this.action === 1) {
+                            number = Random.makeSpecialFloor(this.min, this.max, this.action, this.diff_numbers);
+                        }
                     }
                     result += number;
                     this.operation_numbers.push(number);
