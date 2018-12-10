@@ -53,6 +53,19 @@ export default {
         return number;
     },
     makeSpecialCeilPositive(min, max, numbers) {
+        if(max === 1) {
+            min = 1;
+            max = 9;
+
+            let number = 0;
+            while(!numbers.includes(number)) {
+                console.log('number', number);
+                console.log('min', min);
+                console.log('max', max);
+                number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
+            }
+            return number;
+        }
         let number = 0;
         while(!numbers.includes(number)) {
             console.log('number', number);
@@ -107,29 +120,50 @@ export default {
     },
     makePositive(min, max, numbers) {
         let number = 0;
+        if(max === 1) {
+            min = 1;
+            max = 9;
 
-        while(!numbers.includes(`${number}`)) {
-            console.log('positive numbers', numbers);
-            console.log('number', number);
-            number = this.make( min, max);
+            while (!numbers.includes(`${number}`)) {
+                console.log('positive numbers', numbers);
+                console.log('number', number);
+                number = this.make(min, max);
+            }
+            return number;
         }
+        number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         return number;
     },
     makeNegative(min, max, numbers) {
-        console.log('negative numbers', numbers);
         let number = 0;
-        while(!numbers.includes(`${number}`                                                                                     )) {
-            console.log('negative numbers', numbers);
-            console.log('number', number);
-            number =  this.make(min, max);
+        if(max === 1) {
+            min = 1;
+            max = 9;
+
+            while (!numbers.includes(`${number}`)) {
+                console.log('positive numbers', numbers);
+                console.log('number', number);
+                number = this.make(min, max);
+            }
+            return number;
         }
+        number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         return -number;
     },
     makeMixed(min, max, numbers) {
         let number = 0;
-        while(!numbers.includes(`${number}`)) {
-            number =  this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max))
+        if(max === 1) {
+            min = 1;
+            max = 9;
+
+            while (!numbers.includes(`${number}`)) {
+                console.log('positive numbers', numbers);
+                console.log('number', number);
+                number = this.make(min, max);
+            }
+            return number;
         }
+        number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         const luck = Random.make(0, 1);
         if (luck) {
             return number;
