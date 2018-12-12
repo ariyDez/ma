@@ -1,3 +1,26 @@
+function repeat(number, count) {
+    let newNumber = '';
+    for(let i = 0; i < count; i++) {
+        newNumber += number;
+    }
+    return parseInt(newNumber);
+}
+function modifyNumbers(numbers, min, max) {
+    const newNumbers = [];
+    numbers.map(number =>{
+        let counter = max - min;
+        if (counter > 0) {
+            for (let i = 0; i <= counter; i++) {
+                newNumbers.push(repeat(number, min + i));
+            }
+        } else {
+            newNumbers.push(repeat(number, max));
+        }
+    });
+    return newNumbers;
+}
+
+
 export default {
     make(min, max) {
         return Math.floor(min + Math.random() * (max + 1 - min));
@@ -8,6 +31,8 @@ export default {
         return num - num  % 10;
     },
     makeSpecial(min, max, type, numbers) {
+        numbers = modifyNumbers(numbers, min, max);
+        console.log('numbers', numbers);
         let number;
         switch(type) {
             case 0:
@@ -23,6 +48,7 @@ export default {
         return number;
     },
     makeSpecialCeil(min, max, type, numbers) {
+        numbers = modifyNumbers(numbers, min, max);
         let number;
         switch(type) {
             case 0:
@@ -120,7 +146,7 @@ export default {
     },
     makePositive(min, max, numbers) {
         let number = 0;
-        if(max === 1) {
+        if (max === 1) {
             min = 1;
             max = 9;
 
@@ -131,12 +157,19 @@ export default {
             }
             return number;
         }
+        min -= 1;
+        max -= 1;
+        if (numbers.length > 0) {
+            let index = this.make(0, numbers.length - 1);
+            return numbers[index];
+        }
         number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         return number;
+
     },
     makeNegative(min, max, numbers) {
         let number = 0;
-        if(max === 1) {
+        if (max === 1) {
             min = 1;
             max = 9;
 
@@ -146,13 +179,19 @@ export default {
                 number = this.make(min, max);
             }
             return number;
+        }
+        min -= 1;
+        max -= 1;
+        if (numbers.length > 0) {
+            let index = this.make(0, numbers.length - 1);
+            return numbers[index];
         }
         number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         return -number;
     },
     makeMixed(min, max, numbers) {
         let number = 0;
-        if(max === 1) {
+        if (max === 1) {
             min = 1;
             max = 9;
 
@@ -162,6 +201,12 @@ export default {
                 number = this.make(min, max);
             }
             return number;
+        }
+        min -= 1;
+        max -= 1;
+        if (numbers.length > 0) {
+            let index = this.make(0, numbers.length - 1);
+            return numbers[index];
         }
         number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         const luck = Random.make(0, 1);

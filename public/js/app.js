@@ -483,6 +483,28 @@ module.exports = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+function repeat(number, count) {
+    var newNumber = '';
+    for (var i = 0; i < count; i++) {
+        newNumber += number;
+    }
+    return parseInt(newNumber);
+}
+function modifyNumbers(numbers, min, max) {
+    var newNumbers = [];
+    numbers.map(function (number) {
+        var counter = max - min;
+        if (counter > 0) {
+            for (var i = 0; i <= counter; i++) {
+                newNumbers.push(repeat(number, min + i));
+            }
+        } else {
+            newNumbers.push(repeat(number, max));
+        }
+    });
+    return newNumbers;
+}
+
 /* harmony default export */ __webpack_exports__["a"] = ({
     make: function make(min, max) {
         return Math.floor(min + Math.random() * (max + 1 - min));
@@ -493,6 +515,8 @@ module.exports = {
         return num - num % 10;
     },
     makeSpecial: function makeSpecial(min, max, type, numbers) {
+        numbers = modifyNumbers(numbers, min, max);
+        console.log('numbers', numbers);
         var number = void 0;
         switch (type) {
             case 0:
@@ -508,6 +532,7 @@ module.exports = {
         return number;
     },
     makeSpecialCeil: function makeSpecialCeil(min, max, type, numbers) {
+        numbers = modifyNumbers(numbers, min, max);
         var number = void 0;
         switch (type) {
             case 0:
@@ -616,6 +641,12 @@ module.exports = {
             }
             return number;
         }
+        min -= 1;
+        max -= 1;
+        if (numbers.length > 0) {
+            var index = this.make(0, numbers.length - 1);
+            return numbers[index];
+        }
         number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         return number;
     },
@@ -632,6 +663,12 @@ module.exports = {
             }
             return number;
         }
+        min -= 1;
+        max -= 1;
+        if (numbers.length > 0) {
+            var index = this.make(0, numbers.length - 1);
+            return numbers[index];
+        }
         number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         return -number;
     },
@@ -647,6 +684,12 @@ module.exports = {
                 number = this.make(min, max);
             }
             return number;
+        }
+        min -= 1;
+        max -= 1;
+        if (numbers.length > 0) {
+            var index = this.make(0, numbers.length - 1);
+            return numbers[index];
         }
         number = this.make(Math.pow(10, min), (9 + (1 - Math.pow(0.1, max))) * Math.pow(10, max));
         var luck = Random.make(0, 1);
@@ -926,6 +969,11 @@ module.exports = {
     },
     setAudioAnswer: function setAudioAnswer(answer) {
         localStorage.setItem('anzan-audio-answer', answer);
+    },
+    increaseRightAnswerCounter: function increaseRightAnswerCounter() {},
+    increaseWrongAnswerCounter: function increaseWrongAnswerCounter() {},
+    removeAnswer: function removeAnswer() {
+        localStorage.removeItem('anzan-audio-answer');
     },
     removeReading: function removeReading() {
         localStorage.removeItem('soroban-reading-min');
@@ -61012,6 +61060,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -61019,7 +61077,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             hands: null,
             answerHands: null,
-            answer: null,
+            answer: 0,
             question: null,
             success: null,
             answered: false
@@ -61028,6 +61086,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         __WEBPACK_IMPORTED_MODULE_0__store_anzan__["a" /* default */].initAudio();
         this.init();
+        this.question = __WEBPACK_IMPORTED_MODULE_0__store_anzan__["a" /* default */].state.question;
+        this.answer = __WEBPACK_IMPORTED_MODULE_0__store_anzan__["a" /* default */].state.answer || 0;
+        if (this.question === this.answer) {
+            __WEBPACK_IMPORTED_MODULE_0__store_anzan__["a" /* default */].increaseRightAnswerCounter();
+        } else {
+            __WEBPACK_IMPORTED_MODULE_0__store_anzan__["a" /* default */].increaseWrongAnswerCounter();
+        }
+
+        __WEBPACK_IMPORTED_MODULE_0__store_anzan__["a" /* default */].removeAnswer();
     },
 
     methods: {
@@ -61037,7 +61104,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         clickAnswer: function clickAnswer() {
             __WEBPACK_IMPORTED_MODULE_0__store_anzan__["a" /* default */].setAudioAnswer(this.answer);
             this.answered = true;
-        }
+        },
+        finish: function finish() {}
     }
 });
 
@@ -61049,57 +61117,84 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    !_vm.answered
-      ? _c("div", { staticClass: "row" }, [
-          _c("h3", [_vm._v("Введите ваш ответ:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.answer,
-                expression: "answer"
-              }
-            ],
-            attrs: { type: "text" },
-            domProps: { value: _vm.answer },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.answer = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", on: { click: _vm.clickAnswer } },
-            [_vm._v("Ответить")]
-          )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.answered
-      ? _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-4" }, [
-            _c("h3", [_vm._v("Верный ответ")]),
-            _vm._v("\n            " + _vm._s(_vm.question) + "\n        ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-4" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-4" }, [
-            _c("h3", [_vm._v("Введенный ответ")]),
+  return _c(
+    "div",
+    [
+      !_vm.answered
+        ? _c("div", { staticClass: "row" }, [
+            _c("h3", [_vm._v("Введите ваш ответ:")]),
             _vm._v(" "),
-            _c("div", [_vm._v(_vm._s(_vm.answer))])
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.answer,
+                  expression: "answer"
+                }
+              ],
+              attrs: { type: "text" },
+              domProps: { value: _vm.answer },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.answer = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: { click: _vm.clickAnswer }
+              },
+              [_vm._v("Ответить")]
+            )
           ])
-        ])
-      : _vm._e()
-  ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.answered
+        ? _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-4" }, [
+              _c("h3", [_vm._v("Верный ответ")]),
+              _vm._v("\n            " + _vm._s(_vm.question) + "\n        ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-4" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-4" }, [
+              _c("h3", [_vm._v("Введенный ответ")]),
+              _vm._v(" "),
+              _c("div", [_vm._v(_vm._s(_vm.answer))])
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("router-link", { attrs: { to: "/anzan/audio" } }, [
+        _c("button", { staticClass: "btn" }, [_vm._v("Настройки")])
+      ]),
+      _vm._v(" "),
+      _c(
+        "router-link",
+        {
+          attrs: {
+            to: { path: "/anzan/audio/task", query: { isShowed: true } }
+          }
+        },
+        [_c("button", { staticClass: "btn btn-primary" }, [_vm._v("Далее")])]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-warning", on: { click: _vm.finish } },
+        [_vm._v("Завершить")]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

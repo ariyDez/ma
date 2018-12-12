@@ -16,6 +16,16 @@
                 <div>{{answer}}</div>
             </div>
         </div>
+        <router-link to="/anzan/audio">
+            <button class="btn">Настройки</button>
+        </router-link>
+        <router-link :to="{ path: '/anzan/audio/task', query: { isShowed: true } }">
+            <button class="btn btn-primary">Далее</button>
+        </router-link>
+        <button class="btn btn-warning" @click="finish">Завершить</button>
+        <!--<transition name="fade" mode="out-in" appear>-->
+            <!--<result :question_deal="question_deal" :right="right_answer_deal" :wrong="wrong_answer_deal" v-show="question_deal"></result>-->
+        <!--</transition>-->
     </div>
 </template>
 
@@ -26,7 +36,7 @@
             return {
                 hands: null,
                 answerHands: null,
-                answer: null,
+                answer: 0,
                 question: null,
                 success: null,
                 answered: false,
@@ -35,6 +45,15 @@
         created() {
             Store.initAudio();
             this.init();
+            this.question = Store.state.question;
+            this.answer = Store.state.answer || 0;
+            if (this.question === this.answer) {
+                Store.increaseRightAnswerCounter();
+            } else {
+                Store.increaseWrongAnswerCounter();
+            }
+
+            Store.removeAnswer();
 
         },
         methods: {
@@ -44,6 +63,9 @@
             clickAnswer() {
                 Store.setAudioAnswer(this.answer);
                 this.answered = true;
+            },
+            finish() {
+
             }
         }
     }

@@ -62,6 +62,15 @@ export default {
     setAudioAnswer(answer) {
         localStorage.setItem('anzan-audio-answer', answer);
     },
+    increaseRightAnswerCounter() {
+
+    },
+    increaseWrongAnswerCounter() {
+
+    },
+    removeAnswer() {
+        localStorage.removeItem('anzan-audio-answer');
+    },
     removeReading() {
         localStorage.removeItem('soroban-reading-min');
         localStorage.removeItem('soroban-reading-max');
